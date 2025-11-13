@@ -1,10 +1,19 @@
 from app.api import routes_sign
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="Digital Signature Service",
     version="0.1.0",
     description="Toy digital signature service",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(routes_sign.router, prefix="/api")

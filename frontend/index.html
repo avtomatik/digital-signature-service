@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Digital Signature Service (Toy UI)</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <h1>Digital Signature Service</h1>
+    <div id="status"></div>
+    <form id="sign-form">
+      <input type="text" id="document_id" placeholder="Document ID" required />
+      <textarea id="payload" placeholder="Document content" required></textarea>
+      <button type="submit">Sign Document</button>
+    </form>
+    <pre id="result"></pre>
+
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>

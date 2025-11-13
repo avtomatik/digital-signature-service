@@ -125,3 +125,12 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# Node.js / frontend
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+.env
+.env.local
