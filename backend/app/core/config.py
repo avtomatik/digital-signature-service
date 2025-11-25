@@ -1,15 +1,42 @@
-import os
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    DATABASE_URL = os.getenv(
-        "DATABASE_URL", "postgresql://user:password@postgres:5432/ds_service"
-    )
-    RABBITMQ_URL = os.getenv(
-        "RABBITMQ_URL", "amqp://guest:guest@rabbitmq:5672/"
-    )
-    REDIS_URL = os.getenv("REDIS_URL", "redis://redis:6379")
+    DB_USER: str = "postgres"
+    DB_PASSWORD: str = "mysecretpassword"
+    DB_HOST: str = "localhost"
+    DB_PORT: str = "5432"
+    DB_NAME: str = "digital_signature_service"
+
+    MQ_USER: str = "guest"
+    MQ_PASSWORD: str = "guest"
+    MQ_HOST: str = "rabbitmq"
+    MQ_PORT: str = "5672"
+
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: str = "6379"
+    REDIS_DB: str = "0"
+
+    @property
+    def db_dsn(self) -> str:
+        return (
+            f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@"
+            f"{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
+
+    @property
+    def mq_url(self) -> str:
+        return (
+            f"amqp://{self.MQ_USER}:{self.MQ_PASSWORD}@"
+            f"{self.MQ_HOST}:{self.MQ_PORT}/"
+        )
+
+    @property
+    def redis_url(self) -> str:
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}"
+
+    class Config:
+        env_file = ".env"
 
 
 settings = Settings()
