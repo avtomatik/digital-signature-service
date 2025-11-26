@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("status");
 
   // Ping backend
-  fetch(`${API_URL}/ping`)
+  fetch(`${API_URL}/sign/ping`)
     .then((r) => r.json())
     .then((data) => {
       status.textContent = `Backend status: ${data.status}`;

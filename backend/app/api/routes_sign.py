@@ -13,7 +13,7 @@ async def ping():
     return {"status": "ok"}
 
 
-@router.post("/sign", response_model=SignResponse)
+@router.post("/", response_model=SignResponse)
 async def sign_document(request: SignRequest):
     fake_signature = str(uuid.uuid4()).replace("-", "")
     return SignResponse(

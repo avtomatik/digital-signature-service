@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import routes_sign
+from app.api.router import api_router
 
 app = FastAPI(
     title="Digital Signature Service",
@@ -17,7 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(routes_sign.router, prefix="/api")
+app.include_router(api_router, prefix="/api")
 
 
 @app.get("/")

@@ -8,6 +8,6 @@ def test_root_endpoint(client):
 
 
 def test_ping_endpoint(client):
-    response = client.get("/api/ping")
+    response = client.get("/api/sign/ping")
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {"status": "ok"}
