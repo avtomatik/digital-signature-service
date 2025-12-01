@@ -7,7 +7,8 @@ class SignRequest(BaseModel):
     document_id: str
     payload: str
 
-    model_config: ConfigDict = {"from_attributes": True}
+    class Config(ConfigDict):
+        from_attributes = True
 
 
 class SignResponse(BaseModel):
@@ -16,4 +17,5 @@ class SignResponse(BaseModel):
     signed_at: datetime
     signature_value: str
 
-    model_config: ConfigDict = {"from_attributes": True}
+    class Config(ConfigDict):
+        from_attributes = True
