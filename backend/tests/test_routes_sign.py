@@ -1,19 +1,10 @@
-import random
-import string
 from datetime import datetime
 
 from fastapi import status
 
-from app.api.schemas import SignRequest
 
-
-def test_sign_endpoint(client):
-    payload = SignRequest(
-        document_id="".join(
-            random.choices(string.ascii_letters + string.digits, k=8)
-        ),
-        payload="Hello world!",
-    )
+def test_sign_endpoint(client, generate_document_payload):
+    _, payload = generate_document_payload
 
     response = client.post("/api/sign", json=payload.model_dump())
     assert response.status_code == status.HTTP_200_OK

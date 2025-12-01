@@ -1,36 +1,49 @@
+import asyncio
+import json
+
+import aio_pika
 import pytest
 from fastapi import status
+from httpx import ASGITransport, AsyncClient
 
-from app.api.schemas import SignRequest
-from app.services import rabbitmq as rabbitmq_service
-
-
-@pytest.fixture
-def mock_publish_message(monkeypatch):
-    calls = []
-
-    def fake_publish(queue, message):
-        calls.append((queue, message))
-
-    monkeypatch.setattr(rabbitmq_service, "publish_message", fake_publish)
-    return calls
+from app.core.config import settings
+from app.main import app
 
 
-@pytest.mark.skip(reason="RabbitMQ not running yet")
-def test_sign_async(client, mock_publish_message):
-    payload = SignRequest(document_id="doc2718", payload="Hello world!")
+@pytest.mark.asyncio
+async def test_sign_async(generate_document_payload):
+    document_id, payload = generate_document_payload
 
-    response = client.post("/api/mq/sign-async", json=payload.model_dump())
+    async with AsyncClient(
+        transport=ASGITransport(app=app), base_url="http://test"
+    ) as client:
+        response = await client.post(
+            "/api/mq/sign-async", json=payload.model_dump()
+        )
+
     assert response.status_code == status.HTTP_200_OK
 
     data = response.json()
     assert data["status"] == "queued"
+    assert data["message"] == "Document signing task is queued."
 
-    assert len(mock_publish_message) == 1
+    connection = await aio_pika.connect_robust(settings.mq_url)
+    async with connection:
+        channel = await connection.channel()
+        queue = await channel.declare_queue("signing_queue", durable=True)
 
-    queue, message = mock_publish_message[0]
-    assert queue == "signing_queue"
-    assert message["document_id"] == "doc2718"
-    assert message["payload"] == "Hello world!"
-    assert "timestamp" in message
-    assert "signature_id" in message
+        future = asyncio.Future()
+
+        async def on_message(message: aio_pika.IncomingMessage):
+            body = json.loads(message.body)
+            future.set_result(body)
+            await message.ack()
+
+        await queue.consume(on_message)
+
+        received_message = await future
+
+    assert received_message["document_id"] == document_id
+    assert received_message["payload"] == "Hello world!"
+    assert "timestamp" in received_message
+    assert "signature_id" in received_message

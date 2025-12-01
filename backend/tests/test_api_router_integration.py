@@ -1,8 +1,6 @@
 import pytest
 from fastapi import status
 
-from app.api.schemas import SignRequest
-
 
 def test_api_root_exists(client):
     response = client.get("/")
@@ -11,14 +9,15 @@ def test_api_root_exists(client):
 
 
 @pytest.mark.skip(reason="Redis & RabbitMQ are not running yet")
-def test_api_smoke_endpoints(client):
+def test_api_smoke_endpoints(client, generate_document_payload):
     assert client.get("/api/cache/cache-test").status_code in (
         status.HTTP_200_OK,
         status.HTTP_500_INTERNAL_SERVER_ERROR,
     )
+    _, payload = generate_document_payload
     assert client.post(
         "api/mq/sign-async",
-        json=SignRequest(document_id="x", payload="y").model_dump(),
+        json=payload.model_dump(),
     ).status_code in (
         status.HTTP_200_OK,
         status.HTTP_422_UNPROCESSABLE_CONTENT,
