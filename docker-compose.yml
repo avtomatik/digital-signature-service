@@ -43,8 +43,6 @@ services:
       dockerfile: frontend/Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend:/frontend
     environment:
       - VITE_API_URL=http://backend:8000
     networks:
@@ -62,7 +60,9 @@ services:
     volumes:
       - ./backend:/app
     depends_on:
-      - backend
+      - db
+      - rabbitmq
+      - redis
     env_file:
       - backend/.env
     command: uv run pytest

@@ -4,7 +4,7 @@ WORKDIR /frontend
 
 COPY frontend/ /frontend/
 
-RUN npm install --production
+RUN npm install
 
 EXPOSE 3000
 
