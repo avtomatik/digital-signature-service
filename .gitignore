@@ -122,3 +122,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# VS Code
+.vscode/
+
+# Node.js / frontend
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+.env
+.env.local
