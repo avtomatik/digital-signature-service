@@ -68,7 +68,7 @@ RabbitMQ
 
 ```bash
 # Copy example enviromnent variables
-cp .env.example .env
+cp backend/.env.example backend/.env
 
 # Clean Docker environment
 sudo docker system prune -af

@@ -55,6 +55,20 @@ services:
     networks:
       - backend_network
 
+  tests:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+    env_file:
+      - backend/.env
+    command: uv run pytest
+    networks:
+      - backend_network
+
 networks:
   backend_network:
     driver: bridge
