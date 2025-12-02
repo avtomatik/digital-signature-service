@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     DB_PORT: str = "5432"
     DB_NAME: str = "digital_signature_service"
 
+    POSTGRES_USER: str = "postgres"
+    POSTGRES_PASSWORD: str = "mysecretpassword"
+    POSTGRES_DB: str = "digital_signature_service"
+
     MQ_USER: str = "guest"
     MQ_PASSWORD: str = "guest"
     MQ_HOST: str = "rabbitmq"
