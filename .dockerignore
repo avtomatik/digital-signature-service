@@ -1,0 +1,15 @@
+# Docker files at the root
+docker-compose.yml
+*.lock
+Dockerfile
+
+# Logs
+*.log
+
+# Any system files that are not necessary in the container image
+.DS_Store
+Thumbs.db
+
+# Any IDE-specific files
+.idea/
+.vscode/

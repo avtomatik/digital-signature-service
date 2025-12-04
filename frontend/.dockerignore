@@ -1,0 +1,21 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+
+# Docker files
+docker-compose.yml
+
+# Log files
+*.log
+
+# Any system files that are not necessary in the container image
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+
+# README and License files
+README.md
+LICENSE.md
