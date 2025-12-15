@@ -10,7 +10,9 @@ from app.core.config import settings
 from app.main import app
 
 
-@pytest.mark.xfail(reason="Idle: to be properly configured later.", strict=False)
+@pytest.mark.xfail(
+    reason="Idle: to be properly configured later.", strict=False
+)
 @pytest.mark.asyncio
 async def test_sign_async(generate_document_payload):
     document_id, payload = generate_document_payload
